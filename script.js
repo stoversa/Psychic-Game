@@ -19,6 +19,7 @@ document.onkeyup = function(event) {
 
   // Only accept key presses in alphabet
   var userGuess = event.key;
+  var userGuess = userGuess.toLowerCase()
   if (computerChoices.indexOf(userGuess) >= 0) {
     if (guessesSoFar.indexOf(userGuess) < 0) {
       guessesSoFar.push(userGuess);
