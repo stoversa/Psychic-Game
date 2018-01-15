@@ -1,57 +1,70 @@
-// An array of the alphabet
-var computerChoices = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+// Game components reside here
 
-// Variables to hold game score, guesses, etc.
-var wins = 0;
-var losses = 0;
-var guesesLeft = 9;
-var guessesSoFar = [];
-var computerGuess;
-// Computer's guess
-function changeCompGuess() {
-  computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+var pgame = {
+  // An array of the alphabet
+  computerChoices: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+  // Variables to hold game score, guesses, etc.
+  wins: 0,
+  losses: 0,
+  guesesLeft: 9,
+  guessesSoFar: [],
+  computerGuess: '',
+  userGuess: '',
+  // Computer's guess
+  changeCompGuess: function () {
+    pgame.computerGuess = pgame.computerChoices[Math.floor(Math.random() * pgame.computerChoices.length)];
+  },
+  updateDate: function(){
+    var date = new Date();
+    var thisDate = date.getFullYear();
+    document.querySelector("#date").innerHTML = thisDate;
+  }
 };
-changeCompGuess();
-console.log("computerGuess: " + computerGuess)
 
-// Begins the game function
+// Onload functions pre-populate the computer's guess
+window.onload = function() {
+  pgame.updateDate();
+  pgame.changeCompGuess();
+};
+
+// Begins the game when a key is pressed
 document.onkeyup = function(event) {
 
   // Only accept key presses in alphabet
-  var userGuess = event.key;
-  var userGuess = userGuess.toLowerCase()
-  if (computerChoices.indexOf(userGuess) >= 0) {
-    if (guessesSoFar.indexOf(userGuess) < 0) {
-      guessesSoFar.push(userGuess);
+  pgame.userGuess = event.key;
+  pgame.userGuess = pgame.userGuess.toLowerCase()
+  if (pgame.computerChoices.indexOf(pgame.userGuess) >= 0) {
+    if (pgame.guessesSoFar.indexOf(pgame.userGuess) < 0) {
+      pgame.guessesSoFar.push(pgame.userGuess);
 
       //Game logic
-      if (userGuess === computerGuess) {
-        wins++;
-        guesesLeft = 9;
-        guessesSoFar = [];
-        changeCompGuess();
-        console.log("computerGuess: " + computerGuess)
+      if (pgame.userGuess === pgame.computerGuess) {
+        pgame.wins++;
+        pgame.guesesLeft = 9;
+        pgame.guessesSoFar = [];
+        pgame.changeCompGuess();
+        console.log("computerGuess: " + pgame.computerGuess)
       }
-      else if (userGuess != computerGuess && guesesLeft > 1) {
-        guesesLeft--;
+      else if (pgame.userGuess != pgame.computerGuess && pgame.guesesLeft > 1) {
+        pgame.guesesLeft--;
       }
-      else if (userGuess != computerGuess && guesesLeft == 1) {
-        losses++;
-        guesesLeft = 9;
-        guessesSoFar = [];
-        changeCompGuess();
-        console.log("computerGuess: " + computerGuess)
+      else if (pgame.userGuess != pgame.computerGuess && pgame.guesesLeft == 1) {
+        pgame.losses++;
+        pgame.guesesLeft = 9;
+        pgame.guessesSoFar = [];
+        pgame.changeCompGuess();
+        console.log("computerGuess: " + pgame.computerGuess)
       }
 
       //logging guesses
-      console.log("userGuess: " + userGuess)
+      console.log("userGuess: " + pgame.userGuess)
       
       //Updating the game id
       var html =
-        "<p>Wins: " + wins + "</p>" +
-        "<p>Losses: " + losses + "</p>" +
-        "<p>Guesses Left: " + guesesLeft + "</p>" +
-        "<p>Guesses So Far: " + guessesSoFar + "</p>";
+        "<p>Wins: " + pgame.wins + "</p>" +
+        "<p>Losses: " + pgame.losses + "</p>" +
+        "<p>Guesses Left: " + pgame.guesesLeft + "</p>" +
+        "<p>Guesses So Far: " + pgame.guessesSoFar + "</p>";
 
       document.querySelector("#game").innerHTML = html;
        };
